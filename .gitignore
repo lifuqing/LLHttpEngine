@@ -6,6 +6,20 @@
 build/
 DerivedData/
 
+
+Podfile.lock
+Pods
+.DS_Store
+*.xcworkspace
+*.xcodeproj/xcuserdata
+*.swp
+build
+*/.DS_Store
+.DS_Store
+UserInterfaceState.xcuserstate
+oclint
+
+
 ## Various settings
 *.pbxuser
 !default.pbxuser
