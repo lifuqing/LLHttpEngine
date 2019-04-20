@@ -8,8 +8,7 @@
 #import "LLListResponseModel.h"
 
 @implementation LLListResponseModel
-+ (NSDictionary *)modelCustomPropertyMapper {
-    return @{@"hasMore" : @"more",
-             @"list" : [LLBaseModel class]};
++ (NSDictionary *)modelContainerPropertyGenericClass {
+    return @{@"list" : [LLBaseModel class]};
 }
 @end

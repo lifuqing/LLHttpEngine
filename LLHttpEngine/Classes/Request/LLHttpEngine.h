@@ -11,6 +11,10 @@
 #import "LLURLCacheManager.h"
 #import <AFNetworking/AFNetworking.h>
 
+extern NSString *const kResponseDataKey;
+extern NSString *const kResponseCodeKey;
+extern NSString *const kResponseErrorMsgKey;
+
 @interface LLHttpEngine : NSObject
 
 + (instancetype)sharedInstance;
@@ -27,8 +31,8 @@
  */
 - (NSURLSessionDataTask *)sendRequestWithLLURL:(LLURL *)llurl
                                         target:(id)target
-                                       success:(void (^)(NSDictionary *result, LLBaseResponseModel *model, BOOL isLocalCache))success
-                                       failure:(void (^)(LLBaseResponseModel *model))failure;
+                                       success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
+                                       failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
 
 
 /**
@@ -46,8 +50,8 @@
                                          params:(NSDictionary *)params
                                      modelClass:(Class)modelClass
                                          target:(id)target
-                                        success:(void (^)(NSDictionary *result, LLBaseResponseModel *model, BOOL isLocalCache))success
-                                        failure:(void (^)(LLBaseResponseModel *model))failure;
+                                        success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
+                                        failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
 
 
 /**
@@ -65,8 +69,8 @@
                                           params:(NSDictionary *)params
                                       modelClass:(Class)modelClass
                                           target:(id)target
-                                         success:(void (^)(NSDictionary *result, LLBaseResponseModel *model, BOOL isLocalCache))success
-                                         failure:(void (^)(LLBaseResponseModel *model))failure;
+                                         success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
+                                         failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
 
 
 /**
@@ -88,8 +92,8 @@
                                         modelClass:(Class)modelClass
                                           progress:(void (^)(NSProgress *uploadProgress))progress
                                             target:(id)target
-                                           success:(void (^)(NSDictionary *result, LLBaseResponseModel *model, BOOL isLocalCache))success
-                                           failure:(void (^)(LLBaseResponseModel *model))failure;
+                                           success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
+                                           failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
 
 /**
  取消全部网络请求

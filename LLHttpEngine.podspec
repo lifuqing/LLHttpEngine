@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "LLHttpEngine"
-  s.version      = "1.0.0"
+  s.version      = "1.0.1"
   s.summary      = "网络请求中间件"
   s.description  = "网络请求中间件"
   s.license      = {:type => 'MIT', :file => 'LICENSE'}
