@@ -31,8 +31,8 @@ extern NSString *const kResponseErrorMsgKey;
  */
 - (NSURLSessionDataTask *)sendRequestWithLLURL:(LLURL *)llurl
                                         target:(id)target
-                                       success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
-                                       failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
+                                       success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success
+                                       failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure;
 
 
 /**
@@ -50,8 +50,8 @@ extern NSString *const kResponseErrorMsgKey;
                                          params:(NSDictionary *)params
                                      modelClass:(Class)modelClass
                                          target:(id)target
-                                        success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
-                                        failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
+                                        success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success
+                                        failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure;
 
 
 /**
@@ -69,8 +69,8 @@ extern NSString *const kResponseErrorMsgKey;
                                           params:(NSDictionary *)params
                                       modelClass:(Class)modelClass
                                           target:(id)target
-                                         success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
-                                         failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
+                                         success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success
+                                         failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure;
 
 
 /**
@@ -92,8 +92,8 @@ extern NSString *const kResponseErrorMsgKey;
                                         modelClass:(Class)modelClass
                                           progress:(void (^)(NSProgress *uploadProgress))progress
                                             target:(id)target
-                                           success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
-                                           failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure;
+                                           success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success
+                                           failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure;
 
 /**
  取消全部网络请求

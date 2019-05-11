@@ -12,7 +12,7 @@ NSString *const kResponseDataKey = @"data";
 NSString *const kResponseCodeKey = @"code";
 NSString *const kResponseErrorMsgKey = @"errorMsg";
 
-@interface LLHttpEngine() <AFURLResponseSerialization>
+@interface LLHttpEngine()
 
 @property (nonatomic, strong) AFURLSessionManager *manager;
 @property (nonatomic, strong) NSMutableArray<NSURLSessionDataTask *> *requestTasks;
@@ -72,14 +72,14 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
     [self.lock unlock];
 }
 
-- (NSURLSessionDataTask *)sendRequestWithLLURL:(LLURL *)llurl target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure {
+- (NSURLSessionDataTask *)sendRequestWithLLURL:(LLURL *)llurl target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure {
     
     if ([[llurl.method lowercaseString] isEqualToString:@"post"]) {
-        return [self postRequestWithURLPath:llurl.url params:llurl.params modelClass:NSClassFromString(llurl.modelClass) target:target success:^(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache) {
+        return [self postRequestWithURLPath:llurl.url params:llurl.params modelClass:NSClassFromString(llurl.modelClass) target:target success:^(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache) {
             if (success) {
                 success(response, result, model, NO);
             }
-        } failure:^(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model) {
+        } failure:^(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model) {
             if (failure) {
                 NSDictionary *errMapping = [llurl.baseConfig errorCodeMessageMapping];
                 NSString *originKey = [NSString stringWithFormat:@"%@", @(model.errorCode)];
@@ -117,7 +117,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
             }
         }
         
-        void(^failureBlock)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model) = ^(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model) {
+        void(^failureBlock)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model) = ^(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model) {
             if (failure) {
                 NSDictionary *errMapping = [llurl.baseConfig errorCodeMessageMapping];
                 NSString *originKey = [NSString stringWithFormat:@"%@", @(model.errorCode)];
@@ -128,7 +128,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
             }
         };
         
-        return [self getRequestWithURLPath:llurl.url params:llurl.params modelClass:NSClassFromString(llurl.modelClass) target:target success:^(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache) {
+        return [self getRequestWithURLPath:llurl.url params:llurl.params modelClass:NSClassFromString(llurl.modelClass) target:target success:^(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache) {
             if (success) {
                 NSDictionary *onlinedata = result[kResponseDataKey];
                 //有本地缓存
@@ -157,7 +157,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
             if (result && model.errorCode == kRequestSuccessCode && llurl.curRequestType == LLRequestTypeRefresh) {
                 [[LLURLCacheManager sharedInstance] storeData:result withFileName:llurl.dataCacheIdentifier];
             }
-        } failure:^(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model) {
+        } failure:^(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model) {
             if (llurl.needCache && llurl.curRequestType == LLRequestTypeRefresh) {
                 if (localdata) {
                     //有缓存回调到这肯定是第二次网络请求失败了，一直刷新回调，否则不回调
@@ -179,7 +179,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
     
 }
 
-- (NSURLSessionDataTask *)getRequestWithURLPath:(NSString *)url params:(NSDictionary *)params modelClass:(Class)modelClass target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure {
+- (NSURLSessionDataTask *)getRequestWithURLPath:(NSString *)url params:(NSDictionary *)params modelClass:(Class)modelClass target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure {
     if (!url || ![url isKindOfClass:[NSString class]]) {
         if (failure) {
             failure(nil, nil, nil);
@@ -247,7 +247,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
     return dataTask;
 }
 
-- (NSURLSessionDataTask *)postRequestWithURLPath:(NSString *)url params:(NSDictionary *)params modelClass:(Class)modelClass target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure {
+- (NSURLSessionDataTask *)postRequestWithURLPath:(NSString *)url params:(NSDictionary *)params modelClass:(Class)modelClass target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure {
     return [self postRequestWithURLPath:url params:params constructingBodyWithBlock:nil modelClass:modelClass progress:nil target:target success:success failure:failure];
 }
 
@@ -257,8 +257,8 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
                                       modelClass:(Class)modelClass
                                         progress:(void (^)(NSProgress *uploadProgress))progress
                                           target:(id)target
-                                         success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success
-                                         failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure {
+                                         success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache))success
+                                         failure:(void (^)(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model))failure {
     if (!url || ![url isKindOfClass:[NSString class]]) {
         if (failure) {
             failure(nil, nil, nil);
@@ -282,7 +282,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
                           }
                       });
                   }
-                  completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                  completionHandler:^(NSURLResponse * _Nullable response, id  _Nullable responseObject, NSError * _Nullable error) {
                       if (error) {
 //                          NSLog(@"Error: %@", error);
                           if (failure) {

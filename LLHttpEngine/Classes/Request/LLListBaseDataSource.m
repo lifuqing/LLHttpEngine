@@ -102,7 +102,7 @@
     [_llurl.params addEntriesFromDictionary:[self getPageParams:type]];
     _llurl.curRequestType = type;
     __weak typeof(self) weakSelf = self;
-    [[LLHttpEngine sharedInstance] sendRequestWithLLURL:_llurl target:self success:^(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache) {
+    [[LLHttpEngine sharedInstance] sendRequestWithLLURL:_llurl target:self success:^(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nullable model, BOOL isLocalCache) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (type == LLRequestTypeRefresh) {
             [strongSelf clearListsAndSubClassList];
@@ -110,7 +110,7 @@
         [strongSelf parseResult:result responseModel:model type:type];
         strongSelf.isLocalCache = isLocalCache;
         [strongSelf endRequest];
-    } failure:^(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model) {
+    } failure:^(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         weakSelf.error = [[NSError alloc] initWithDomain:model.errorMsg code:model.errorCode userInfo:nil];
         [strongSelf endRequest];
