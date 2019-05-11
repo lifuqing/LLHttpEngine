@@ -16,6 +16,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
 
 @property (nonatomic, strong) AFURLSessionManager *manager;
 @property (nonatomic, strong) NSMutableArray<NSURLSessionDataTask *> *requestTasks;
+@property (nonatomic, strong) NSLock *lock;
 @end
 
 @implementation LLHttpEngine
@@ -45,29 +46,30 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
         _manager.responseSerializer = serializer;
         
         _requestTasks = [NSMutableArray array];
+        _lock = [[NSLock alloc] init];
     }
     return self;
 }
 
 - (void)cancelAllRequestTasks {
-    @synchronized (self) {
-        [self.requestTasks enumerateObjectsUsingBlock:^(NSURLSessionDataTask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj cancel];
-        }];
-        [self.requestTasks removeAllObjects];
-    }
+    [self.lock lock];
+    [self.requestTasks enumerateObjectsUsingBlock:^(NSURLSessionDataTask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [obj cancel];
+    }];
+    [self.requestTasks removeAllObjects];
+    [self.lock unlock];
 }
 
 - (void)cancelRequestTaskByTarget:(id)target
 {
-    @synchronized (self) {
-        [self.requestTasks enumerateObjectsUsingBlock:^(NSURLSessionDataTask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([obj.taskDescription isEqualToString:[NSString stringWithFormat:@"%lu",[target hash]]]) {
-                [obj cancel];
-            }
-            [self.requestTasks removeObject:obj];
-        }];
-    }
+    [self.lock lock];
+    [self.requestTasks enumerateObjectsUsingBlock:^(NSURLSessionDataTask * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj.taskDescription isEqualToString:[NSString stringWithFormat:@"%lu",[target hash]]]) {
+            [obj cancel];
+        }
+        [self.requestTasks removeObject:obj];
+    }];
+    [self.lock unlock];
 }
 
 - (NSURLSessionDataTask *)sendRequestWithLLURL:(LLURL *)llurl target:(id)target success:(void (^)(NSURLResponse * _Nullable response, NSDictionary * _Nullable result, LLBaseResponseModel * _Nonnull model, BOOL isLocalCache))success failure:(void (^)(NSURLResponse * _Nonnull response, NSError * _Nullable error,  LLBaseResponseModel * _Nonnull model))failure {
@@ -233,14 +235,14 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
             
         }
         __strong typeof(weakSelf) strongSelf = weakSelf;
-        @synchronized (strongSelf) {
-            [strongSelf.requestTasks removeObject:dataTask];
-        }
+        [strongSelf.lock lock];
+        [strongSelf.requestTasks removeObject:dataTask];
+        [strongSelf.lock unlock];
     }];
     dataTask.taskDescription = [NSString stringWithFormat:@"%lu", [target hash]];
-    @synchronized (self) {
-        [self.requestTasks addObject:dataTask];
-    }
+    [self.lock lock];
+    [self.requestTasks addObject:dataTask];
+    [self.lock unlock];
     [dataTask resume];
     return dataTask;
 }
@@ -324,16 +326,15 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
                           }
                       }
                       __strong typeof(weakSelf) strongSelf = weakSelf;
-                      @synchronized (strongSelf) {
-                          [strongSelf.requestTasks removeObject:uploadTask];
-                      }
+                      [strongSelf.lock lock];
+                      [strongSelf.requestTasks removeObject:uploadTask];
+                      [strongSelf.lock unlock];
                   }];
     
     uploadTask.taskDescription = [NSString stringWithFormat:@"%lu", [target hash]];
-    @synchronized (self) {
-        [self.requestTasks addObject:uploadTask];
-    }
-    
+    [self.lock lock];
+    [self.requestTasks addObject:uploadTask];
+    [self.lock unlock];
     [uploadTask resume];
 
     return uploadTask;

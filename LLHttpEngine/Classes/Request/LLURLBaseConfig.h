@@ -49,6 +49,8 @@
  */
 - (NSArray *)loadUrlInfo;
 
+///公共参数
+- (NSDictionary *)commonParams;
 
 /**
  错误Code Message 映射表 子类重写此方法，格式如下

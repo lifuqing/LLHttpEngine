@@ -49,6 +49,10 @@
     return arr;
 }
 
+- (NSDictionary *)commonParams {
+    return nil;
+}
+
 - (NSDictionary *)errorCodeMessageMapping{
     return @{
              @"originErrorCode" : @"FormatErrorMessage",

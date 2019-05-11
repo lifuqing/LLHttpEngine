@@ -60,6 +60,11 @@
                     _server = dict[@"server"];
                     _originBaseParams = dict[@"params"];
                     _params = [NSMutableDictionary dictionaryWithDictionary:_originBaseParams];
+                    NSDictionary *common = [_baseConfig commonParams];
+                    if (common) {
+                        [_params addEntriesFromDictionary:common];
+                    }
+                    
                     _needCache = [dict[@"cache"] boolValue];
                     _method = dict[@"method"];
                     NSString *shortUrl = [self url:[dict[@"url"] copy] Args:nil];
@@ -81,6 +86,10 @@
 - (void)clearExtendParams {
     [_params removeAllObjects];
     [_params addEntriesFromDictionary:_originBaseParams];
+    NSDictionary *common = [_baseConfig commonParams];
+    if (common) {
+        [_params addEntriesFromDictionary:common];
+    }
 }
 
 ///第一次配置完llurl之后生成唯一的标识
