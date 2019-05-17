@@ -16,6 +16,11 @@ extern NSString *const kResponseCodeKey;
 extern NSString *const kResponseErrorMsgKey;
 
 @interface LLHttpEngine : NSObject
+/*
+ !!!!!!!!
+ 需要在程序启动后先配置LLURLCacheManager里面的userID，才可以正常使用缓存。
+ !!!!!!!!
+ */
 
 + (instancetype)sharedInstance;
 
