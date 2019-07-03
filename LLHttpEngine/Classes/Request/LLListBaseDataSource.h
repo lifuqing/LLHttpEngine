@@ -62,7 +62,7 @@
 #pragma mark - 子类解析数据，根据需要重写，
 /***************示例**************
 NSUInteger reqPage = (type == LLRequestTypeLoadMore) ? (self.page + 1) : 1;
-return @{@"offset" : @(self.pageSize * (reqPage - 1))};
+return @{@"pg" : @(reqPage), @"pz" : @(self.pageSize)};
  ********************************/
 ///配置分页参数
 - (NSDictionary *)getPageParams:(LLRequestType)type;

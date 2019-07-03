@@ -155,7 +155,7 @@
 - (NSDictionary *)getPageParams:(LLRequestType)type
 {
     NSUInteger reqPage = (type == LLRequestTypeLoadMore) ? (self.page + 1) : 1;
-    return @{@"offset" : @(self.pageSize * (reqPage - 1)), @"limit" : @(self.pageSize)};
+    return @{@"pg" : @(reqPage), @"pz" : @(self.pageSize)};
 }
 
 - (void)clearLists{
