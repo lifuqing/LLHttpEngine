@@ -154,7 +154,7 @@ NSString *const kResponseErrorMsgKey = @"errorMsg";
                     success(response, result, model, NO);
                 }
             }
-            if (result && model.errorCode == kRequestSuccessCode && llurl.curRequestType == LLRequestTypeRefresh) {
+            if (llurl.needCache && result && model.errorCode == kRequestSuccessCode && llurl.curRequestType == LLRequestTypeRefresh) {
                 [[LLURLCacheManager sharedInstance] storeData:result withFileName:llurl.dataCacheIdentifier];
             }
         } failure:^(NSURLResponse * _Nullable response, NSError * _Nullable error,  LLBaseResponseModel * _Nullable model) {
